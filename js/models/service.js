@@ -12,11 +12,10 @@ define([
       time: 0,
     },
 
-    url: 'object.php',
+    url: 'objects.php',
   
     initialize: function(){
-      //log('Service: ' + this.attributes.title);
-      //log(this);
+      this.url = this.url + '?s=' + this.title;
   
       this.bind("change", function(){
         // Update the views
@@ -28,39 +27,22 @@ define([
      * Desc: Send an ajax request to see if the service is running properly
      */
     checkStatus: function() {
-      var serviceUrl = this.url + '?s=' + this.title;
+      
       var startTime = new Date().getTime();
       var endTime = null;
       
-      // The ajax request
-      var request = $.ajax({
-        url: serviceUrl,
-        cache: false
-      });
+      this.status = "checking";
       
-      // Success
-      request.done(function(msg){
-        endTime = new Date().getTime();
-        var elapsedTime = endTime - startTime;
-        
-        log(msg);
-        this.update('success', elapsedTime);
+      this.fetch({
+        success: function(model, response){
+          this.update();
+          endTime = new Date().getTime();
+          this.time = endTime - startTime;
+        },
+        error: function(model, response){
+          log('error: ' + this.title);
+        }
       });
-      
-      // Fail
-      request.fail(function(msg){
-        
-        this.update('requestFail', elapsedTime);
-      });
-    },
-    
-    
-    /* Func: update
-     * Desc: Update the status in the model
-     */
-     update: function(newStatus, elapsedTime) {
-        this.set({ status: newStatus });
-        this.set({ time: elapsedTime });
     }
     
   });
