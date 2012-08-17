@@ -1,5 +1,6 @@
+<h2>Status</h2>
 <ul>
   <% _.each(projects, function(project){ %>
-   <li><%= project.get("name") %> - <%= project.get("score") %></li> 
+   <li><%= project.get("title") %> - <%= project.get("status") %></li> 
   <% }); %>
 </ul>

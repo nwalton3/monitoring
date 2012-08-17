@@ -1,7 +1,7 @@
 // Filename: models/service
 define([
-  'Underscore',
-  'Backbone',
+  'underscore',
+  'backbone',
 ], function( _, Backbone ){
 
   var serviceModel = Backbone.Model.extend({
@@ -20,7 +20,7 @@ define([
       this.bind("change", function(){
         // Update the views
       });
-    }
+    },
     
     
     /* Func: checkStatus
@@ -51,7 +51,7 @@ define([
         
         this.update('requestFail', elapsedTime);
       });
-    }
+    },
     
     
     /* Func: update
