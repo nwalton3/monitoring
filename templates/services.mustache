@@ -2,8 +2,8 @@
 
 <ul>
   {{#each services}}
-  <li>
-    {{title}} ({{url}}): {{status}}
+  <li class="{{status}}">
+    <strong>{{title}}</strong> ({{url}})
   </li>
   {{/each}}
 </ul>
