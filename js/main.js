@@ -1,4 +1,4 @@
-// Author: Thomas Davis <thomasalwyndavis@gmail.com>
+// Author: Nate Walton
 // Filename: main.js
 
 // Require.js allows us to configure shortcut alias
@@ -9,7 +9,7 @@ require.config({
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-optamd3-min',
     text: 'libs/require/text',
-    handlebars: 'libs/handlebars/handlebars.min',
+    handlebars: 'libs/handlebars/handlebars-wrap',
     plugins: 'plugins',
     templates: '../templates'
   }

@@ -4,9 +4,10 @@ define([
   'underscore',
   'backbone',
   'plugins',
+  'handlebars',
   'views/latencyList',
   'views/serviceList'
-], function($, _, Backbone, Plugins, latencyListView, serviceListView ){
+], function($, _, Backbone, Plugins, Handlebars, latencyListView, serviceListView ){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes

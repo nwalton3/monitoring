@@ -1,5 +1,5 @@
 // Avoid `console` errors in browsers that lack a console.
-if (!(window.console && console.log)) {
+if (!(window.console && log)) {
     (function() {
         var noop = function() {};
         var methods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'markTimeline', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'];
@@ -11,4 +11,7 @@ if (!(window.console && console.log)) {
     }());
 }
 
+function log(msg) {
+  console.log(msg);
+}
 // Place any jQuery/helper plugins in here.

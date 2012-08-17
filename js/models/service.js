@@ -9,13 +9,14 @@ define([
       title: '',
       requestUrl: '',
       status: '',
-      time: undefined,
+      time: 0,
     },
 
     url: 'object.php',
   
     initialize: function(){
-      log('New service: ' + this.title);
+      //log('Service: ' + this.attributes.title);
+      //log(this);
   
       this.bind("change", function(){
         // Update the views

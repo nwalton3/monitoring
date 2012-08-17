@@ -1,30 +1,32 @@
-// Filename: views/serviceList
+// Filename: views/servicesList
 define([
   'jquery',
   'underscore',
   'backbone',
+  'text',
+  'text!templates/services.mustache',
   'handlebars',
-  // Pull in the Service module from above
-  'collections/services',
-  'text!templates/projects/list.html'
+  'collections/services'
+], function($, _, Backbone, Text, Template, Handlebars, servicesCollection){
 
-], function($, _, Backbone, Handlebars, servicesCollection, projectListTemplate){
-  var serviceListView = Backbone.View.extend({
+  var latencyListView = Backbone.View.extend({
     el: $("#page"),
+    collection: servicesCollection,
+    
     initialize: function(){
-      this.collection = servicesCollection;
+      servicesCollection.update();
     },
-    exampleBind: function( model ){
-      //console.log(model);
-    },
-    render: function(){
-      var data = {
-        projects: this.collection.models,
-        _: _
-      };
-      var compiledTemplate = _.template( projectListTemplate, data );
-      $("#page").html( compiledTemplate );
+    
+    /* Func: Render 
+    */
+    render: function() {
+      var source = Template;
+      var template = Handlebars.compile(source);
+      var data = {pageTitle:'Status', services: servicesCollection.toJSON()};
+      
+      $(this.el).html(template(data));
     }
+    
   });
-  return new serviceListView;
+  return new latencyListView;
 });
