@@ -1,0 +1,1 @@
+[{title: "CAS", status:"success", url:"http://cas.byu.edu"}, {title: "Person", status:"fail", url:"http://personservice.byu.edu"}, {title:"AIM", status:"success", url:"http://aim.byu.edu"}]
