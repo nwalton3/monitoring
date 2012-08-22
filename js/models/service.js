@@ -10,15 +10,15 @@ define([
       requestUrl: '',
       status: '',
       time: 0,
+      url: 'objects.php'
     },
-
-    url: 'objects.php',
   
     initialize: function(){
-      this.url = this.url + '?s=' + this.title;
+      this.attributes.url = this.attributes.url + '?s=' + this.attributes.title;
   
       this.bind("change", function(){
         // Update the views
+        log(this);
       });
     },
     
@@ -27,20 +27,21 @@ define([
      * Desc: Send an ajax request to see if the service is running properly
      */
     checkStatus: function() {
+      //log('Checking status: ' + this.attributes.title);
       
       var startTime = new Date().getTime();
       var endTime = null;
       
-      this.status = "checking";
+      this.attributes.status = "checking";
       
       this.fetch({
         success: function(model, response){
-          this.update();
           endTime = new Date().getTime();
-          this.time = endTime - startTime;
+          model.time = endTime - startTime;
+          log(model.attributes.title + ' load time: ' + model.time + 'ms');
         },
         error: function(model, response){
-          log('error: ' + this.title);
+          //log('error: ' + model.title);
         }
       });
     }

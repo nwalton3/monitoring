@@ -3,7 +3,7 @@
 <ul>
   {{#each services}}
   <li class="{{status}}">
-    <strong>{{title}}</strong> ({{url}})
+    <strong>{{title}}</strong>{{#if url}} <span class="url">({{url}})</span>{{/if}}{{#if time}} <span class="time">Load time: {{time}}ms</span>{{/if}}
   </li>
   {{/each}}
 </ul>

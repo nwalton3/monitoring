@@ -6,7 +6,7 @@ define([
 ], function($, _, Backbone, serviceModel){
   var servicesCollection = Backbone.Collection.extend({
     model: serviceModel,
-    url: 'objects.php',
+    url: 'objects.php?s=all',
     
     initialize: function(){
       //this.update();
@@ -16,11 +16,11 @@ define([
       this.fetch({
         async: false,
         success: function(collection, response) {
-          //log(collection.length);
+          //log('Services');
         },
         error: function(collection, response) {
           log('Error');
-          log(response);
+          //log(response);
         }
       });
     }

@@ -5,14 +5,18 @@ define([
   'backbone',
   'text',
   'text!templates/services.mustache',
-  'handlebars'
-], function($, _, Backbone, Text, Template, Handlebars){
+  'handlebars',
+  'collections/titles'
+], function($, _, Backbone, Text, Template, Handlebars, servicesCollection){
 
   var latencyListView = Backbone.View.extend({
     el: $("#page"),
+    collection: servicesCollection,
     
     initialize: function(){
-
+      servicesCollection.update();
+      
+      this.collection.model.bind('change', this.render, this);
     },
     
     /* Func: Render 
@@ -20,12 +24,8 @@ define([
     render: function() {
       var source = Template;
       var template = Handlebars.compile(source);
-      var data = { pageTitle: 'Load Times',
-        services: [
-        {title: "CAS", status:"success", url:"http://cas.byu.edu"},
-        {title: "Person", status:"fail", url:"http://personservice.byu.edu"}, 
-        {title:"AIM", status:"success", url:"http://aim.byu.edu"}
-      ]};
+      var data = {pageTitle:'Load Times', services: this.collection.toJSON()};
+      
       $(this.el).html(template(data));
     }
     

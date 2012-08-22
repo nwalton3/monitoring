@@ -9,7 +9,7 @@ define([
   'collections/services'
 ], function($, _, Backbone, Text, Template, Handlebars, servicesCollection){
 
-  var latencyListView = Backbone.View.extend({
+  var servicesListView = Backbone.View.extend({
     el: $("#page"),
     collection: servicesCollection,
     
@@ -28,5 +28,5 @@ define([
     }
     
   });
-  return new latencyListView;
+  return new servicesListView;
 });
