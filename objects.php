@@ -24,23 +24,12 @@
 
   $all = Array($arr1, $arr2, $arr3, $arr4, $arr5, $arr6);
 
-
-  // Just the titles  
-  $title1 = Array("title"=>"CAS");
-  $title2 = Array("title"=>"Person");
-  $title3 = Array("title"=>"AIM");
-  $title4 = Array("title"=>"GRO");
-  $title5 = Array("title"=>"Scout");
-  $title6 = Array("title"=>"Server");
-  
-  $titles = Array($title1, $title2, $title3, $title4, $title5, $title6);
-
     
   // Get the requested data
   switch($q) {
     
     case 'titles':
-      $arr = $titles;
+      $arr = getTitles();
       break;
       
     case 'cas':
@@ -68,6 +57,29 @@
       $arr = checkAllServices();
       break;
   }  
+  
+ 
+ 
+/**
+* Gives a list of services
+*
+* @return A json encoded array
+*/
+ 
+function getTitles() {
+  // Just the titles  
+  $title1 = Array("title"=>"CAS");
+  $title2 = Array("title"=>"Person");
+  $title3 = Array("title"=>"AIM");
+  $title4 = Array("title"=>"GRO");
+  $title5 = Array("title"=>"Scout");
+  $title6 = Array("title"=>"Server");
+  
+  $titles = Array($title1, $title2, $title3, $title4, $title5, $title6);
+
+  return $titles;
+}
+
 
 /**
 * Will check all services and 
@@ -75,15 +87,15 @@
 * @return A json encoded array
 */
 function checkAllServices(){
-  $retArr = [];
+  $retArr = Array();
 
   //TODO: Remove 'magic' strings
-  $retArr[] = json_decode(checkServer());
-  $retArr[] = json_decode(checkCAS());
-  $retArr[] = json_decode(checkPersonService());
-  $retArr[] = json_decode(checkGRO());
+  $retArr[] = checkServer();
+  $retArr[] = checkCAS();
+  $retArr[] = checkPersonService();
+  $retArr[] = checkGRO();
 
-  return json_encode($retArr);
+  return $retArr;
 }
 
 /**
@@ -93,12 +105,12 @@ function checkAllServices(){
 */
 function checkServer(){
 
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "Server";
   $retArr["status"] = 1;
-  $retArr["url"] = "my.byu.edu";
+  $retArr["requestUrl"] = "my.byu.edu";
 
-  return json_encode($retArr);
+  return $retArr;
 }
 
 /**
@@ -126,9 +138,9 @@ function checkCAS(){
   curl_close($curly);
 
   //Return object
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "CAS";
-  $retArr["url"] = "cas.byu.edu";
+  $retArr["requestUrl"] = "cas.byu.edu";
 
   if($httpcode >= 200 && $httpcode < 300){
     $retArr["status"] = 1;
@@ -136,7 +148,7 @@ function checkCAS(){
     $retArr["status"] = 0;
   }
 
-  return json_encode($retArr);
+  return $retArr;
 }
 
 /**
@@ -145,12 +157,12 @@ function checkCAS(){
 * @return A json encoded array
 */
 function checkPersonService(){
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "Person";
   $retArr["status"] = 0;
-  $retArr["url"] = "person.byu.edu";
+  $retArr["requestUrl"] = "person.byu.edu";
 
-  return json_encode($retArr);
+  return $retArr;
 
 }
 
@@ -160,12 +172,12 @@ function checkPersonService(){
 * @return A json encoded array
 */
 function checkGRO(){
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "GRO";
   $retArr["status"] = 0;
-  $retArr["url"] = "gro.byu.edu";
+  $retArr["requestUrl"] = "gro.byu.edu";
 
-  return json_encode($retArr);
+  return $retArr;
 }
 
 /**
@@ -174,12 +186,12 @@ function checkGRO(){
 * @return A json encoded array
 */
 function checkAIM(){
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "AIM";
   $retArr["status"] = 0;
-  $retArr["url"] = "aim.byu.edu";
+  $retArr["requestUrl"] = "aim.byu.edu";
 
-  return json_encode($retArr);
+  return $retArr;
 }
 
 /**
@@ -188,14 +200,20 @@ function checkAIM(){
 * @return A json encoded array
 */
 function checkScout(){
-  $retArr = [];
+  $retArr = Array();
   $retArr["title"] = "Scout";
   $retArr["status"] = 0;
-  $retArr["url"] = "scout.byu.edu";
+  $retArr["requestUrl"] = "scout.byu.edu";
 
-  return json_encode($retArr);
+  return $retArr;
 }
+
+
+
+
+
   // Send back the JSON
   echo json_encode($arr);
+
   
 ?>
