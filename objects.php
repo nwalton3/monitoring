@@ -15,12 +15,20 @@
 
 
   // The full info  
+<<<<<<< HEAD
   $arr1 = Array("title"=>"CAS", "status"=>1, "url"=>"http://cas.byu.edu");
   $arr2 = Array("title"=>"Person", "status"=>0, "url"=>"http://person.byu.edu");
   $arr3 = Array("title"=>"AIM", "status"=>1, "url"=>"http://aim.byu.edu");
   $arr4 = Array("title"=>"GRO", "status"=>1, "url"=>"http://gro.byu.edu");
   $arr5 = Array("title"=>"Scout", "status"=>1, "url"=>"http://scout.byu.edu");
   $arr6 = Array("title"=>"Server", "status"=>1, "url"=>"http://learningsuite.byu.edu");
+=======
+  $arr1 = Array("title"=>"CAS",    "status"=>"success", "requestUrl"=>"cas.byu.edu");
+  $arr2 = Array("title"=>"Person", "status"=>"error",   "requestUrl"=>"person.byu.edu");
+  $arr3 = Array("title"=>"AIM",    "status"=>"success", "requestUrl"=>"aim.byu.edu");
+  $arr4 = Array("title"=>"GRO",    "status"=>"success", "requestUrl"=>"gro.byu.edu");
+  $arr5 = Array("title"=>"Scout",  "status"=>"success", "requestUrl"=>"scout.byu.edu");
+>>>>>>> It's alive! Hahahahaha!
 
   $all = Array($arr1, $arr2, $arr3, $arr4, $arr5, $arr6);
 
@@ -60,7 +68,12 @@
       break;
 
     case 'scout':
+<<<<<<< HEAD
       $arr = checkScout();
+=======
+      $arr = $arr5;
+      $arr["status"] = "processing"; 
+>>>>>>> It's alive! Hahahahaha!
       break;
     
     case 'all':

@@ -1,9 +1,19 @@
-<h2>{{pageTitle}}</h2>
+<h2>{{pageTitle}} <a id="btn-reload-services" class="btn btn-primary" >Reload</a></h2>
 
-<ul>
+
+<table class="table table-condensed">
+  <thead>
+    <th>Service</th>
+    <th>URL</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
   {{#each services}}
-  <li class="{{status}}">
-    <strong>{{title}}</strong>{{#if url}} <span class="url">({{url}})</span>{{/if}}{{#if time}} <span class="time">Load time: {{time}}ms</span>{{/if}}
-  </li>
+  <tr class="{{status}}">
+    <td class="title">{{title}}</td>
+    <td class="url">{{requestUrl}}</td>
+    <td class="status">{{status}}</td>
+  </tr>
   {{/each}}
-</ul>
+  </tbody>
+</table>

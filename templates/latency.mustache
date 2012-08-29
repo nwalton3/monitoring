@@ -1,0 +1,22 @@
+<h2>{{pageTitle}} <a id="btn-reload-times" class="btn btn-primary" >Reload All</a></h2>
+
+<table class="table">
+  <thead>
+    <th>Service</th>
+    <th>URL</th>
+    <th>Load Time (ms)</th>
+    <th>Status</th>
+    <th>Reload</th>
+  </thead>
+  <tbody>
+  {{#each services}}
+  <tr class="{{status}}">
+    <td class="title">{{title}}</td>
+    <td class="url">{{requestUrl}}</td>
+    <td class="time">{{time}}</td>
+    <td class="status">{{status}}</td>
+    <td class="reload"><a class="btn btn-small refresh" id="{{reloadID}}"><i class="icon-repeat"></i></a></td>
+  </tr>
+  {{/each}}
+  </tbody>
+</table>

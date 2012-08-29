@@ -13,28 +13,41 @@
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<link rel="stylesheet" href="css/mobile.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/mobile.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 
 	<script data-main="js/main" src="js/libs/require/require.js"></script>
 </head>
 <body>
 
-<div id="container">
-  <div id="logo">
-    <h1>LS Monitoring</h1>
-  </div>
+  <h1 class="pageTitle">LS Web Service Monitoring</h1>
+  
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a href="#">Load Times</a>
+    </li>
+    <li>
+      <a href="#/status">Status Only</a>
+    </li>
+  </ul>
+  
+<!--
   <div id="menu">
     <ul>
-      <li><a href="#">Latency</a></li>
+      <li><a href="#">Load Times</a></li>
       <li><a href="#/status">Status</a></li>
     </ul>
   </div>
+-->
   <div id="page">
     Loading....
   </div>
 
-</div> 
+  <script src="js/libs/jquery/jquery-min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="js/script.js"></script>
+  
 
 </body>
 </html>

@@ -9,14 +9,14 @@ define([
     url: 'objects.php?s=titles',
     
     initialize: function(){
-      //this.update();
+      
     },
     
     update: function() {
       this.fetch({
         async: false,
         success: function(collection, response) {          
-          collection.checkStatus();
+          collection.getLoadTimes();
         },
         error: function(collection, response) {
           collection.throwError();
@@ -24,7 +24,7 @@ define([
       });        
     },
     
-    checkStatus: function() {
+    getLoadTimes: function() {
       _.each(this.models, function(model){
         model.checkStatus();
       });

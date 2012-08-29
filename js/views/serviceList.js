@@ -9,7 +9,7 @@ define([
   'collections/services'
 ], function($, _, Backbone, Text, Template, Handlebars, servicesCollection){
 
-  var servicesListView = Backbone.View.extend({
+  var ServicesListView = Backbone.View.extend({
     el: $("#page"),
     collection: servicesCollection,
     
@@ -17,8 +17,14 @@ define([
       servicesCollection.update();
     },
     
-    /* Func: Render 
-    */
+    events: {
+      "click #btn-reload-services": "refresh"
+    },
+    
+    refresh:function() {
+      servicesCollection.update();
+    },
+    
     render: function() {
       var source = Template;
       var template = Handlebars.compile(source);
@@ -28,5 +34,5 @@ define([
     }
     
   });
-  return new servicesListView;
+  return new ServicesListView;
 });
