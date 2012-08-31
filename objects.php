@@ -52,7 +52,7 @@
       $arr = checkScout();
       break;
 
-    case 'server':
+    case 'ls server':
       $arr = checkServer();
       break;
     
@@ -72,14 +72,15 @@
  
 function getTitles() {
   // Just the titles  
-  $title0 = Array("title"=>"Server");
-  $title1 = Array("title"=>"CAS");
-  $title2 = Array("title"=>"Person");
-  $title3 = Array("title"=>"AIM");
-  $title4 = Array("title"=>"GRO");
-  $title5 = Array("title"=>"Scout");
-  
-  $titles = Array($title0, $title1, $title2, $title3, $title4, $title5);
+  $titles = Array();
+
+  //TODO: Remove 'magic' strings
+  $titles[] = checkServer(true);
+  $titles[] = checkCAS(true);
+  $titles[] = checkPersonService(true);
+  $titles[] = checkAIM(true);
+  $titles[] = checkGRO(true);
+  $titles[] = checkScout(true);
 
   return $titles;
 }
@@ -98,7 +99,9 @@ function checkAllServices(){
   $retArr[] = checkServer();
   $retArr[] = checkCAS();
   $retArr[] = checkPersonService();
+  $retArr[] = checkAIM();
   $retArr[] = checkGRO();
+  $retArr[] = checkScout();
 
   return $retArr;
 }
@@ -108,18 +111,18 @@ function checkAllServices(){
 *
 * @return A json encoded array
 */
-function checkServer($title){
+function checkServer($title = false){
 
   $retArr = Array();
   $retArr["title"] = "LS Server";
+  $retArr["desc"] = "The web server running Learning Suite. If down, LS is completely inaccessible.";  
+  $retArr["requestUrl"] = "learningsuite.byu.edu";
   
   if($title) {
     return $retArr;
   }
   
-  $retArr["desc"] = "The web server running Learning Suite. If down, LS is completely inaccessible.";  
   $retArr["status"] = 1;
-  $retArr["requestUrl"] = "learningsuite.byu.edu";
 
   return $retArr;
 }
@@ -129,9 +132,11 @@ function checkServer($title){
 *
 * @return A json encoded array
 */
-function checkCAS($title){
+function checkCAS($title = false){
   $retArr = Array();
   $retArr["title"] = "CAS";
+  $retArr["desc"] = "BYU's campus-wide authentication solution. If down, nothing on campus requiring CAS authentication works at all.";  
+  $retArr["requestUrl"] = "cas.byu.edu";
 
   // Only return the title if that's all that's requested
   if($title) {
@@ -157,8 +162,6 @@ function checkCAS($title){
   curl_close($curly);
 
   //Return object
-  $retArr["desc"] = "BYU's campus-wide authentication solution. If down, nothing on campus requiring CAS authentication works at all.";  
-  $retArr["requestUrl"] = "cas.byu.edu";
 
   if($httpcode >= 200 && $httpcode < 300){
     $retArr["status"] = 1;
@@ -174,17 +177,17 @@ function checkCAS($title){
 *
 * @return A json encoded array
 */
-function checkPersonService($title){
+function checkPersonService($title = false){
   $retArr = Array();
   $retArr["title"] = "Person";
+  $retArr["desc"] = "Data stored by BYU about all individuals here. If down, Learning Suite will not function.";  
+  $retArr["requestUrl"] = "person.byu.edu";
     
   if($title) {
     return $retArr;
   }
   
-  $retArr["desc"] = "Data stored by BYU about all individuals here. If down, Learning Suite will not function.";  
   $retArr["status"] = 0;
-  $retArr["requestUrl"] = "person.byu.edu";
 
   return $retArr;
 
@@ -195,17 +198,17 @@ function checkPersonService($title){
 * 
 * @return A json encoded array
 */
-function checkGRO($title){
+function checkGRO($title = false){
   $retArr = Array();
   $retArr["title"] = "GRO";
+  $retArr["desc"] = "Manages all groups. If down, instructors and students will likely not be affected, but others (admin, staff) may be blocked or limited in Learning Suite.";
+  $retArr["requestUrl"] = "gro.byu.edu";
     
   if($title) {
     return $retArr;
   }
   
-  $retArr["desc"] = "Manages all groups. If down, instructors and students will likely not be affected, but others (admin, staff) may be blocked or limited in Learning Suite.";
   $retArr["status"] = 0;
-  $retArr["requestUrl"] = "gro.byu.edu";
 
   return $retArr;
 }
@@ -215,17 +218,17 @@ function checkGRO($title){
 *
 * @return A json encoded array
 */
-function checkAIM($title){
+function checkAIM($title = false){
   $retArr = Array();
   $retArr["title"] = "AIM";
+  $retArr["desc"] = "Course enrollments. If down, nothing in Learning Suite works.";  
+  $retArr["requestUrl"] = "aim.byu.edu";
     
   if($title) {
     return $retArr;
   }
   
-  $retArr["desc"] = "Course enrollments. If down, nothing in Learning Suite works.";  
   $retArr["status"] = 0;
-  $retArr["requestUrl"] = "aim.byu.edu";
 
   return $retArr;
 }
@@ -235,17 +238,17 @@ function checkAIM($title){
 *
 * @return A json encoded array
 */
-function checkScout($title){
+function checkScout($title = false){
   $retArr = Array();
   $retArr["title"] = "Scout";
+  $retArr["desc"] = "Manages exams. If down, all exam functions will be unavailable.";  
+  $retArr["requestUrl"] = "scout.byu.edu";
     
   if($title) {
     return $retArr;
   }
   
-  $retArr["desc"] = "Manages exams. If down, all exam functions will be unavailable.";  
   $retArr["status"] = 1;
-  $retArr["requestUrl"] = "scout.byu.edu";
 
   return $retArr;
 }

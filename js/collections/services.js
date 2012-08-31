@@ -19,8 +19,7 @@ define([
           log('Services Updated');
         },
         error: function(collection, response) {
-          log('Error');
-          //log(response);
+          log('Error updating services collection');
         }
       });
     }
