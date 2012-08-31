@@ -8,21 +8,40 @@
 
 
 .pageTitle, #page {
-  padding: 0 5%; }
+  padding: 0 5%;
+  position: relative; }
 
 .nav-tabs {
   padding: 0 6%; }
+  
+a.refresh {
+  margin:-5px 2px;
+}
 
 table.table tbody {
   td.title {
-    font-weight: bold; } 
+    font-weight: bold; }
+  td.status {
+    min-width: 5em; }
   tr.success td {
     background-color: transparent; }
-  tr.processing td {
-    background-color: $yellow0; }
+  tr.requesting td {
+    background-color: $yellow0;
+    &.reload {
+      background:$yellow0 url("../img/spinner.gif") 18px 10px no-repeat; }
+    a.refresh {
+      display:none; } }
   tr.error td {
     background-color: $red1;
     color: #fff; } }
+
+.reload-all {
+  position: absolute;
+  right:6%;
+  top:.5em;
+}
+
+
 
 @import "helpers";
 @import "media-queries";

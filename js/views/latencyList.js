@@ -45,6 +45,17 @@ define([
     render: function() {
       var source = Template;
       var template = Handlebars.compile(source);
+      
+      _.each(this.collection.models, function(model){
+        var status = model.get("status");
+        if(status == 0) {
+          status = "error";
+        } else if (status == 1) {
+          status = "success";
+        }
+        model.set({"status": status});
+      });
+      
       var data = {pageTitle:'Load Times', services: this.collection.toJSON()};
       
       $(this.el).html(template(data));

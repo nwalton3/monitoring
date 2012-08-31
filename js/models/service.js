@@ -10,6 +10,7 @@ define([
       title: '',
       requestUrl: '',
       status: '',
+      desc: '',
       time: 0,
       url: 'objects.php'
     },
@@ -26,6 +27,8 @@ define([
       newID = "reload-" + this.cid;
       this.set({reloadID: newID});
     },
+    
+    
         
     /* Func: checkStatus
      * Desc: Send an ajax request to see if the service is running properly
@@ -34,19 +37,14 @@ define([
       var startTime, endTime, elapsed;
       
       startTime = new Date().getTime();
-      this.set({status: "processing"});
+      this.set({status: "requesting", time: null});
       
       this.fetch({
         url:this.get('url'),
-        async: false,
+        async: true,
         success: function(model, response){
           endTime = new Date().getTime();
           elapsed = endTime - startTime;
-          
-          if(model.get("status") == "error") {
-            elapsed = null;
-          }
-          
           model.set({time: elapsed});
         },
         error: function(model, response){

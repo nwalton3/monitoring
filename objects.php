@@ -51,6 +51,10 @@
     case 'scout':
       $arr = checkScout();
       break;
+
+    case 'server':
+      $arr = checkServer();
+      break;
     
     case 'all':
     default:
@@ -68,17 +72,18 @@
  
 function getTitles() {
   // Just the titles  
+  $title0 = Array("title"=>"Server");
   $title1 = Array("title"=>"CAS");
   $title2 = Array("title"=>"Person");
   $title3 = Array("title"=>"AIM");
   $title4 = Array("title"=>"GRO");
   $title5 = Array("title"=>"Scout");
-  $title6 = Array("title"=>"Server");
   
-  $titles = Array($title1, $title2, $title3, $title4, $title5, $title6);
+  $titles = Array($title0, $title1, $title2, $title3, $title4, $title5);
 
   return $titles;
 }
+
 
 
 /**
@@ -103,12 +108,18 @@ function checkAllServices(){
 *
 * @return A json encoded array
 */
-function checkServer(){
+function checkServer($title){
 
   $retArr = Array();
-  $retArr["title"] = "Server";
+  $retArr["title"] = "LS Server";
+  
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["desc"] = "The web server running Learning Suite. If down, LS is completely inaccessible.";  
   $retArr["status"] = 1;
-  $retArr["requestUrl"] = "my.byu.edu";
+  $retArr["requestUrl"] = "learningsuite.byu.edu";
 
   return $retArr;
 }
@@ -118,7 +129,15 @@ function checkServer(){
 *
 * @return A json encoded array
 */
-function checkCAS(){
+function checkCAS($title){
+  $retArr = Array();
+  $retArr["title"] = "CAS";
+
+  // Only return the title if that's all that's requested
+  if($title) {
+    return $retArr;
+  }
+
   //TODO: Make into a defined
   $CASurl = "https://cas.byu.edu/cas/login?service=https://my.byu.edu/uPortal/Login";
   if($CASurl == NULL) return false;
@@ -138,8 +157,7 @@ function checkCAS(){
   curl_close($curly);
 
   //Return object
-  $retArr = Array();
-  $retArr["title"] = "CAS";
+  $retArr["desc"] = "BYU's campus-wide authentication solution. If down, nothing on campus requiring CAS authentication works at all.";  
   $retArr["requestUrl"] = "cas.byu.edu";
 
   if($httpcode >= 200 && $httpcode < 300){
@@ -156,9 +174,15 @@ function checkCAS(){
 *
 * @return A json encoded array
 */
-function checkPersonService(){
+function checkPersonService($title){
   $retArr = Array();
   $retArr["title"] = "Person";
+    
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["desc"] = "Data stored by BYU about all individuals here. If down, Learning Suite will not function.";  
   $retArr["status"] = 0;
   $retArr["requestUrl"] = "person.byu.edu";
 
@@ -171,9 +195,15 @@ function checkPersonService(){
 * 
 * @return A json encoded array
 */
-function checkGRO(){
+function checkGRO($title){
   $retArr = Array();
   $retArr["title"] = "GRO";
+    
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["desc"] = "Manages all groups. If down, instructors and students will likely not be affected, but others (admin, staff) may be blocked or limited in Learning Suite.";
   $retArr["status"] = 0;
   $retArr["requestUrl"] = "gro.byu.edu";
 
@@ -185,9 +215,15 @@ function checkGRO(){
 *
 * @return A json encoded array
 */
-function checkAIM(){
+function checkAIM($title){
   $retArr = Array();
   $retArr["title"] = "AIM";
+    
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["desc"] = "Course enrollments. If down, nothing in Learning Suite works.";  
   $retArr["status"] = 0;
   $retArr["requestUrl"] = "aim.byu.edu";
 
@@ -199,16 +235,20 @@ function checkAIM(){
 *
 * @return A json encoded array
 */
-function checkScout(){
+function checkScout($title){
   $retArr = Array();
   $retArr["title"] = "Scout";
-  $retArr["status"] = 0;
+    
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["desc"] = "Manages exams. If down, all exam functions will be unavailable.";  
+  $retArr["status"] = 1;
   $retArr["requestUrl"] = "scout.byu.edu";
 
   return $retArr;
 }
-
-
 
 
 

@@ -14,7 +14,7 @@ define([
     
     update: function() {
       this.fetch({
-        async: false,
+        //async: false,
         success: function(collection, response) {
           log('Services Updated');
         },
