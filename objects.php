@@ -1,7 +1,17 @@
 <?php 
-  header('Content-Type: application/json');
+header('Content-Type: application/json');
 
+//Needs to be changed to point at the urlDefs in the ls repository
+require_once('c:/wamp/www/ls/site/inc/urlDefs.php');
 
+Authentication::verifyAuthentication();
+
+require_once("FakeSession.php");
+require_once(SESSION_WRAPPER_URL);
+
+$fk = new FakeSession();
+
+LearningSuite_Environment::setApplication($fk);
   // Get the query string  
   $q = '';
   if(isset( $_GET['s'] )) {
@@ -77,7 +87,7 @@ function getTitles() {
   //TODO: Remove 'magic' strings
   $titles[] = checkServer(true);
   $titles[] = checkCAS(true);
-  $titles[] = checkPersonService(true);
+  //$titles[] = checkPersonService(true);
   $titles[] = checkAIM(true);
   $titles[] = checkGRO(true);
   $titles[] = checkScout(true);
@@ -98,7 +108,7 @@ function checkAllServices(){
   //TODO: Remove 'magic' strings
   $retArr[] = checkServer();
   $retArr[] = checkCAS();
-  $retArr[] = checkPersonService();
+  //$retArr[] = checkPersonService();
   $retArr[] = checkAIM();
   $retArr[] = checkGRO();
   $retArr[] = checkScout();
@@ -144,7 +154,8 @@ function checkCAS($title = false){
   }
 
   //TODO: Make into a defined
-  $CASurl = "https://cas.byu.edu/cas/login?service=https://my.byu.edu/uPortal/Login";
+  $CASurl = "https://cas.byu.edu/cas/login";
+  $CASurl = "http://www.google.com/";
   if($CASurl == NULL) return false;
 
   //Connect to website with curl
@@ -161,8 +172,9 @@ function checkCAS($title = false){
   //Close curl
   curl_close($curly);
 
+ // var_dump(curl_error($curly));
   //Return object
-
+ 
   if($httpcode >= 200 && $httpcode < 300){
     $retArr["status"] = 1;
   }else{
@@ -187,7 +199,13 @@ function checkPersonService($title = false){
     return $retArr;
   }
   
-  $retArr["status"] = 0;
+	$test = LearningSuite_LearningSuite_Monitor::find(1);
+	try{
+		$test->forceLoad();
+		 $retArr["status"] = 1;
+	}catch(Exception $e){
+		 $retArr["status"] = 0;
+	}
 
   return $retArr;
 
@@ -202,14 +220,21 @@ function checkGRO($title = false){
   $retArr = Array();
   $retArr["title"] = "GRO";
   $retArr["desc"] = "Manages all groups. If down, instructors and students will likely not be affected, but others (admin, staff) may be blocked or limited in Learning Suite.";
-  $retArr["requestUrl"] = "gro.byu.edu";
+  $retArr["requestUrl"] = "ws.byu.edu/rest/v1/identity/customGroup";
     
   if($title) {
     return $retArr;
   }
   
   $retArr["status"] = 0;
-
+  
+$test = LearningSuite_LearningSuite_Monitor::find(3);
+	try{
+		$test->forceLoad();
+		 $retArr["status"] = 1;
+	}catch(Exception $e){
+		 $retArr["status"] = 0;
+	}
   return $retArr;
 }
 
@@ -222,13 +247,19 @@ function checkAIM($title = false){
   $retArr = Array();
   $retArr["title"] = "AIM";
   $retArr["desc"] = "Course enrollments. If down, nothing in Learning Suite works.";  
-  $retArr["requestUrl"] = "aim.byu.edu";
+  $retArr["requestUrl"] = "ws.byu.edu";
     
-  if($title) {
+ if($title) {
     return $retArr;
   }
   
-  $retArr["status"] = 0;
+	$test = LearningSuite_LearningSuite_Monitor::find(1);
+	try{
+		$test->forceLoad();
+		 $retArr["status"] = 1;
+	}catch(Exception $e){
+		 $retArr["status"] = 0;
+	}
 
   return $retArr;
 }
@@ -243,12 +274,20 @@ function checkScout($title = false){
   $retArr["title"] = "Scout";
   $retArr["desc"] = "Manages exams. If down, all exam functions will be unavailable.";  
   $retArr["requestUrl"] = "scout.byu.edu";
-    
+  
+    $test = LearningSuite_LearningSuite_Monitor::find(4);
+	
   if($title) {
     return $retArr;
   }
   
-  $retArr["status"] = 1;
+    $retArr["status"] = 0;
+  try{
+		$test->forceLoad();
+		 $retArr["status"] = 1;
+	}catch(Exception $e){
+		 $retArr["status"] = 0;
+	}
 
   return $retArr;
 }
