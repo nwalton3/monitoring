@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 //Needs to be changed to point at the urlDefs in the ls repository
 require_once('c:/wamp/www/ls/site/inc/urlDefs.php');
 
-Authentication::verifyAuthentication();
+//Authentication::verifyAuthentication();
 
 require_once("FakeSession.php");
 require_once(SESSION_WRAPPER_URL);
@@ -172,7 +172,6 @@ function checkCAS($title = false){
   //Close curl
   curl_close($curly);
 
- // var_dump(curl_error($curly));
   //Return object
  
   if($httpcode >= 200 && $httpcode < 300){
@@ -261,6 +260,33 @@ function checkAIM($title = false){
 		 $retArr["status"] = 0;
 	}
 
+  return $retArr;
+}
+
+/**
+* Will check the gro service and giveback a status
+* 
+* @return A json encoded array
+*/
+function checkAlfresco($title = false){
+  $retArr = Array();
+  $retArr["title"] = "Alfresco";
+  $retArr["desc"] = "Manages file uploading.";
+  $retArr["requestUrl"] = "";
+    
+  if($title) {
+    return $retArr;
+  }
+  
+  $retArr["status"] = 0;
+  
+$test = LearningSuite_LearningSuite_Monitor::find(3);
+	try{
+		$test->forceLoad();
+		 $retArr["status"] = 1;
+	}catch(Exception $e){
+		 $retArr["status"] = 0;
+	}
   return $retArr;
 }
 
