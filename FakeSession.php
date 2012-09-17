@@ -1,7 +1,14 @@
 <?php
 
+/**
+* FakeSession
+*
+* Takes the place of the Session so that we don't really need one.
+*/
 class FakeSession implements LearningSuite_Application{
 	
+
+
 	/**
 	 * Will return the fake CTL person as the authenticated person
 	 * @return A NetID
@@ -39,7 +46,7 @@ class FakeSession implements LearningSuite_Application{
 	}
 	
 	/**
-	 *
+	 * No idea what this does
 	 */
 	public static function getAPISessionCookies(){
 		
@@ -47,7 +54,7 @@ class FakeSession implements LearningSuite_Application{
 	}
     
 	/**
-	 * 
+	 * No idea what this does
 	 */
 	public static function setAPISessionCookies(array $cookies){
 		
