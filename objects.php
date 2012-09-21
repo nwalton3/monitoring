@@ -104,11 +104,12 @@ function getTitles() {
 	//$titles[] = checkPersonService(true);
 	$titles[] = checkAIM(true);
 	$titles[] = checkGRO(true);
-	$titles[] = checkScout(true);
-	$titles[] = checkAgilix(true);
-	$titles[] = checkAlfresco(true);
-	$titles[] = checkGradebook(true);
 	$titles[] = checkBookstore(true);
+	$titles[] = checkGradebook(true);
+	$titles[] = checkScout(true);
+	//$titles[] = checkAgilix(true);
+	$titles[] = checkAlfresco(true);
+	
 
 	return $titles;
 }
@@ -177,8 +178,8 @@ function checkCAS($title = false){
 	}
 
 	//TODO: Make into a defined
-	$CASurl = "https://cas.byu.edu/cas/login";
-	$CASurl = "http://www.google.com/";
+	$CASurl = "http://cas.byu.edu/cas/login";
+	//$CASurl = "http://www.google.com/";
 	if($CASurl == NULL) return false;
 
 	//Connect to website with curl
@@ -197,7 +198,7 @@ function checkCAS($title = false){
 
 	//Return object
 	
-	if($httpcode >= 200 && $httpcode < 300){
+	if($httpcode >= 200 && $httpcode < 304){
 		$retArr["status"] = 1;
 	}else{
 		$retArr["status"] = 0;
@@ -340,7 +341,8 @@ function checkGradebook($title = false){
 	$test = LearningSuite_LearningSuite_Monitor::find(6);
 
 	try{
-		if($test->forceLoad() == 0) {
+		$test->forceLoad();
+		if($test->getGradebook() == 0) {
 			$retArr["status"] = 0;
 		}else{
 			$retArr["status"] = 1;
@@ -366,8 +368,35 @@ function checkBookstore($title = false){
 		return $retArr;
 	}
 	
+		
 	$retArr["status"] = 0;
-	
+	$url = "http://booklist.byu.edu/item/9780716779391";
+	//$url = "http://www.google.com/";
+		if($url == NULL) return false;
+
+		//Connect to website with curl
+		$curly = curl_init($url);
+
+		//Some settings for curl
+		curl_setopt($curly, CURLOPT_TIMEOUT, 0);
+		curl_setopt($curly, CURLOPT_CONNECTTIMEOUT, 0);
+		curl_setopt($curly, CURLOPT_RETURNTRANSFER, true);// What does this exactly do
+		
+		$data = curl_exec($curly);
+		$httpcode = curl_getinfo($curly,CURLINFO_HTTP_CODE);
+		
+		//Close curl
+		curl_close($curly);
+		
+		//Return object
+		//var_dump($httpcode);
+		//die;
+		if($httpcode >= 200 && $httpcode < 304){
+			$retArr["status"] = 1;
+		}else{
+			$retArr["status"] = 0;
+		}
+	/*
 	$test = LearningSuite_LearningSuite_Monitor::find(8);
 
 	try{
@@ -378,7 +407,7 @@ function checkBookstore($title = false){
 		}
 	}catch(Exception $e){
 	 $retArr["status"] = 0;
- }
+ }*/
  return $retArr;
 }
 
