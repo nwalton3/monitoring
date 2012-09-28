@@ -4,7 +4,8 @@
 <table class="table">
   <thead>
     <th>Service</th>
-    <th>URL</th>
+    <th>Request</th>
+    <th>From Server</th>
     <th>Load Time (ms)</th>
     <th>Status</th>
     <th>Reload</th>
@@ -14,6 +15,7 @@
   <tr class="{{status}}">
     <td class="title"><a rel="popover" data-content="{{desc}}" data-original-title="{{title}}">{{title}}</a></td>
     <td class="url">{{requestUrl}}</td>
+    <td class="src">{{serverUrl}}</td>
     <td class="time">{{time}}</td>
     <td class="status">{{status}}</td>
     <td class="reload"><a class="btn btn-small refresh" id="{{reloadID}}"><i class="icon-repeat"></i></a></td>

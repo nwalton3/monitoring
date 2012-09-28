@@ -12,6 +12,7 @@ define([
       status: '',
       desc: '',
       time: 0,
+      server: 0,
       url: 'objects.php'
     },
   
@@ -20,7 +21,7 @@ define([
     
       if(this.get("url") === 'objects.php') {
         // Add query string to the end of the url
-        var newUrl  = this.get("url") + '?s=' + this.get("title");
+        var newUrl  = this.get("url") + '?s=' + this.get("title") + "&srv=" + this.get("server");
         this.set({url: newUrl});
       }
       

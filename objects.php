@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 //Needs to be changed to point at the urlDefs in the ls repository
-require_once('c:/wamp/www/ls/site/inc/urlDefs.php');
+require_once('../learningsuite-trunk/site/inc/urlDefs.php');
 
 require_once("FakeSession.php");
 require_once(SESSION_WRAPPER_URL);
@@ -12,9 +12,15 @@ $fk = new FakeSession();
 LearningSuite_Environment::setApplication($fk);
 	// Get the query string  
 $q = '';
+$srv = 0;
 if(isset( $_GET['s'] )) {
 	$q = $_GET['s'];
 }
+if(isset( $_GET['srv'] )) {
+	$srv = $_GET['srv'];
+}
+
+// Normalize the request
 $q = strtolower($q);
 
 
@@ -77,7 +83,7 @@ switch($q) {
 	break;
 
 	case 'ls server':
-	$arr = checkServer();
+	$arr = checkServer($srv);
 	break;
 	
 	case 'all':
@@ -99,7 +105,14 @@ function getTitles() {
 	$titles = Array();
 
 	//TODO: Remove 'magic' strings
-	$titles[] = checkServer(true);
+
+	// Loop through all 6 servers
+	for ($server = 1; $server <= 6; $server++ ) {
+	
+  	$titles[] = checkServer($server, true);
+  
+  }
+	
 	$titles[] = checkCAS(true);
 	//$titles[] = checkPersonService(true);
 	$titles[] = checkAIM(true);
@@ -144,17 +157,21 @@ function checkAllServices(){
 *
 * @return A json encoded array
 */
-function checkServer($title = false){
+function checkServer($sourceServer = 1, $title = false){
 
 	$retArr = Array();
 	$retArr["title"] = "LS Server";
 	$retArr["desc"] = "The web server running Learning Suite. If down, LS is completely inaccessible.";  
 	$retArr["requestUrl"] = "learningsuite.byu.edu";
+	$retArr["server"] = $sourceServer;
 	
 	if($title) {
 		return $retArr;
 	}
 	
+	$retArr = Array();
+	
+	$retArr["serverUrl"] = "dremel" . $sourceServer . ".byu.edu";
 	$retArr["status"] = 1;
 
 	return $retArr;
