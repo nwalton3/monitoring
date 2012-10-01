@@ -37,61 +37,51 @@ $dremel = array(
 $servicesObjectsData = array(
 	'cas' => array(
 		'title'=>'CAS',
-		'active' => true,
 		'requestUrl' => "cas.byu.edu",
 		'desc' => "BYU's campus-wide authentication solution. If down, nothing on campus requiring CAS authentication works at all."
 		),
 	'person'=> array(
 		'title'=>'Person',
-		'active' => true,
 		'requestUrl' => "person.byu.edu",
 		'desc' => "Data stored by BYU about all individuals here. If down, Learning Suite will not function."
 		),
 	'aim'=> array(
 		'title'=>'AIM',
-		'active' => true,
 		'requestUrl' => "ws.byu.edu",
 		'desc' => "Course enrollments. If down, nothing in Learning Suite works."
 		),
 	'gro'=> array(
 		'title'=>'GRO',
-		'active' => true,
 		'requestUrl' => "ws.byu.edu/rest/v1/identity/customGroup",
 		'desc' => "Manages all groups. If down, instructors and students will likely not be affected, but others (admin, staff) may be blocked or limited in Learning Suite."
 		),
 	'scout'=> array(
 		'title'=>'Scout',
-		'active' => true,
 		'requestUrl' => "learningsuite.byu.edu",
 		'desc' => "Manages exams. If down, all exam functions will be unavailable."
 		),
 	'gradebook'=> array(
 		'title'=>'Gradebook',
-		'active' => true,
-		'requestUrl' => "learningsuite.byu.edu",
+		'requestUrl' => "gradebook.byu.edu",
 		'desc' => "Manages grades."
 		),
 	'agilix'=> array(
 		'title'=>'Agilix',
-		'active' => true,
-		'requestUrl' => "learningsuite.byu.edu",
+		'requestUrl' => "gradebook.byu.edu",
 		'desc' => "Helps manages gradebook."
 		),
 	'alfresco'=> array(
 		'title'=>'Alfresco',
-		'active' => true,
 		'requestUrl' => "dev1.ctl.byu.edu:8080/alfresco/api",
 		'desc' => "Manages grades."
 		),
 	'bookstore'=> array(
 		'title'=>'Bookstore',
-		'active' => true,
-		'requestUrl' => "learningsuite.byu.edu",
+		'requestUrl' => "booklist.byu.edu",
 		'desc' => "Gives BYU Bookstore Book infomation."
 		),
 	'server'=> array(
 		'title'=>'Server',
-		'active' => true,
 		'requestUrl' => "learningsuite.byu.edu",
 		'desc' => "The web server running Learning Suite. If down, LS is completely inaccessible."
 		)
@@ -262,10 +252,8 @@ $servicesObjectsFn = array(
 		$status = 1;
 
 		return $status;
-	}//*/
-
+	}
 );
-//*/
 
 /**
 * Will check a service and give back selected information about it
@@ -275,38 +263,43 @@ $servicesObjectsFn = array(
 * @param $servicesObjectsFn
 * @return An Array that will always contain static data about the services and usually(dependant of settings) status
 */
-function checkService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn){
+function checkService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn,$dremel,$server){
 	
 	$data = array();
 	if($serviceToCheck === "titles"){
-		$data[] = $servicesObjectsData['server'];
-		$data[] = $servicesObjectsData['cas'];
-		$data[] = $servicesObjectsData['person'];
-		$data[] = $servicesObjectsData['aim'];
-		$data[] = $servicesObjectsData['gro'];
-		$data[] = $servicesObjectsData['gradebook'];
-		$data[] = $servicesObjectsData['bookstore'];
-		$data[] = $servicesObjectsData['scout'];
-		//$data[] = $servicesObjectsData['agilix'];
-		//$data[] = $servicesObjectsData['alfresco'];
-		
-		
+		foreach($dremel as $key){
+			$data[] = getStaticDataWithServer($key,'server',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'cas',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'person',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'aim',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'gro',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'gradebook',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'bookstore',$servicesObjectsData);
+			$data[] = getStaticDataWithServer($key,'scout',$servicesObjectsData);
+			//$data[] = $servicesObjectsData['agilix'];
+			//$data[] = $servicesObjectsData['alfresco'];
+		}
 	}else if($serviceToCheck === "all"){
-		$data[] = checkService('server',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('cas',$servicesObjectsData,$servicesObjectsFn);
+		$data[] = checkService('server',$servicesObjectsData,$servicesObjectsFn,$server);
+		$data[] = checkService('cas',$servicesObjectsData,$servicesObjectsFn,$server);
 		$data[] = checkService('person',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('aim',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('gro',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('gradebook',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('bookstore',$servicesObjectsData,$servicesObjectsFn);
-		$data[] = checkService('scout',$servicesObjectsData,$servicesObjectsFn);
+		$data[] = checkService('aim',$servicesObjectsData,$servicesObjectsFn,$server);
+		$data[] = checkService('gro',$servicesObjectsData,$servicesObjectsFn,$server);
+		$data[] = checkService('gradebook',$servicesObjectsData,$servicesObjectsFn,$server);
+		$data[] = checkService('bookstore',$servicesObjectsData,$servicesObjectsFn,$server);
+		$data[] = checkService('scout',$servicesObjectsData,$servicesObjectsFn,$server);
 		//$data[] = checkService('agilix',$servicesObjectsData,$servicesObjectsFn);
 		//$data[] = checkService('alfresco',$servicesObjectsData,$servicesObjectsFn);
 		
 	}else{
-		//TODO: Check to see if 
-		$data = $servicesObjectsData[$serviceToCheck];
+		//
+		if($server != null){
+			setServer($server);
+		}
 		$fn = $servicesObjectsFn[$serviceToCheck];
+		
+		$data = array();//$servicesObjectsData[$serviceToCheck];
+		$data['title'] = ucfirst($serviceToCheck);
 		$data['status'] = $fn();
 	}
 	return $data;
@@ -331,6 +324,25 @@ function simpleCheckService($serviceToCheck,$servicesObjectsData,$servicesObject
 }
 
 /**
+ * Willg et the static data array with a 'server' field added
+ * @param type $server
+ * @param type $service
+ * @param type $servicesObjectsData
+ */
+function getStaticDataWithServer($server,$service,$servicesObjectsData){
+	$return = $servicesObjectsData[$service];
+	$return['server'] = $server;
+	return $return;
+}
+
+/**
+ * Set the server that LSObject will connect to for the LSAPI
+ * @param type $server
+ */
+function setServer($server){
+	//TODO: GREG SET STUFF HERE
+}
+/**
 * Will check each dremel server with each service and return a simple array
 *
 * @param $dremel - An array of the $dremel servers
@@ -351,9 +363,7 @@ function checkAllServersAndServices($dremel,$servicesObjectsData,$servicesObject
 		
 		foreach ($titles as $key => $vals) {
 			$temp = simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
-			if($temp['status'] != 1){
-				$data[] =  simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
-			}
+			$data[] =  simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
 			//$data[] =  simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
 			
 		}
@@ -364,6 +374,7 @@ function checkAllServersAndServices($dremel,$servicesObjectsData,$servicesObject
 	return $retArr;
 }
 
+//Service
 // Get the query string  
 $q = '';
 if(isset( $_GET['s'] )) {
@@ -381,10 +392,8 @@ $q2 = strtolower($q2);
 $arr = array();
 
 if(strlen($q) > 0){
-	$arr = checkService($q,$servicesObjectsData,$servicesObjectsFn);
-}
-
-if(strlen($q2) > 0){
+	$arr = checkService($q,$servicesObjectsData,$servicesObjectsFn,$dremel,$q2);
+}else if(strlen($q2) > 0){
 	$arr = checkAllServersAndServices($dremel,$servicesObjectsData,$servicesObjectsFn);
 }
 
