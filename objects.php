@@ -23,6 +23,16 @@ $fk = new FakeSession();
 
 LearningSuite_Environment::setApplication($fk);
 
+//The array that needs to be modified 
+$dremel = array(
+	'dremel1.byu.edu',
+	'dremel2.byu.edu',
+	'dremel3.byu.edu',
+	'dremel4.byu.edu',
+	'dremel5.byu.edu',
+	'dremel6.byu.edu'
+
+	);
 
 $servicesObjectsData = array(
 	'cas' => array(
@@ -256,6 +266,15 @@ $servicesObjectsFn = array(
 
 );
 //*/
+
+/**
+* Will check a service and give back selected information about it
+*
+* @param $serviceToCheck -  A string of what to check
+* @param $servicesObjectsData
+* @param $servicesObjectsFn
+* @return An Array that will always contain static data about the services and usually(dependant of settings) status
+*/
 function checkService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn){
 	
 	$data = array();
@@ -292,7 +311,59 @@ function checkService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn){
 	}
 	return $data;
 }
-//var_dump($servicesObjectsData);
+
+/**
+* Will get the information about a service and then just get a simple version of it.
+*
+* @param $serviceToCheck - A string with 
+* @param $servicesObjectsData - An Assoc. Array of static data about each service
+* @param $servicesObjectsFn - An Assoc. Array of functions to check status
+* @return A simple array with just the name and the status of a service
+*/
+function simpleCheckService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn){
+
+	$return = checkService($serviceToCheck,$servicesObjectsData,$servicesObjectsFn);
+	unset($return['requestUrl']);
+	unset($return['desc']);
+	unset($return['active']);
+	return $return;
+
+}
+
+/**
+* Will check each dremel server with each service and return a simple array
+*
+* @param $dremel - An array of the $dremel servers
+* @param $servicesObjectsData -An Assoc. Array of static data about each service
+* @param $servicesObjectsFn - An Assoc. Array of functions to check status
+* @return An array of all the dremel servers with data on each
+*/
+function checkAllServersAndServices($dremel,$servicesObjectsData,$servicesObjectsFn){
+	//
+	$titles = checkService("titles",$servicesObjectsData,$servicesObjectsFn);
+
+	$retArr = array();
+	
+	foreach($dremel as $val){
+
+		$data = array();
+		//TODO: Set the learningSuite Object environment
+		
+		foreach ($titles as $key => $vals) {
+			$temp = simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
+			if($temp['status'] != 1){
+				$data[] =  simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
+			}
+			//$data[] =  simpleCheckService(strtolower($vals['title']),$servicesObjectsData,$servicesObjectsFn);
+			
+		}
+		$retArr[$val] = $data;
+
+	}
+
+	return $retArr;
+}
+
 // Get the query string  
 $q = '';
 if(isset( $_GET['s'] )) {
@@ -300,7 +371,22 @@ if(isset( $_GET['s'] )) {
 }
 $q = strtolower($q);
 
-$arr = checkService($q,$servicesObjectsData,$servicesObjectsFn);
+//This is for each each server
+$q2 = '';
+if(isset( $_GET['q'])){
+	$q2 = $_GET['q'];
+}
+$q2 = strtolower($q2);
+
+$arr = array();
+
+if(strlen($q) > 0){
+	$arr = checkService($q,$servicesObjectsData,$servicesObjectsFn);
+}
+
+if(strlen($q2) > 0){
+	$arr = checkAllServersAndServices($dremel,$servicesObjectsData,$servicesObjectsFn);
+}
 
 echo json_encode($arr);
 
