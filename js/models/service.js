@@ -7,8 +7,9 @@ define([
   var serviceModel = Backbone.Model.extend({
     defaults: {
       reloadID: '',
-      title: '',
       requestUrl: '',
+      title: '',
+      server: '',
       status: '',
       desc: '',
       time: 0,
@@ -20,7 +21,7 @@ define([
     
       if(this.get("url") === 'objects.php') {
         // Add query string to the end of the url
-        var newUrl  = this.get("url") + '?s=' + this.get("title");
+        var newUrl  = this.get("url") + '?s=' + this.get("title") + '&q=' + this.get("server");
         this.set({url: newUrl});
       }
       
