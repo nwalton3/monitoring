@@ -1,7 +1,7 @@
 <h2>{{pageTitle}}</h2>
 <a id="btn-reload-times" class="btn btn-primary reload-all" >Reload All</a>
 
-<table class="table">
+<table class="table table-hover table-condensed">
   <thead>
     <th>Service</th>
     <th>Service URL</th>
@@ -13,7 +13,7 @@
   <tbody>
   {{#each services}}
   <tr class="{{status}}">
-    <td class="title"><a rel="popover" data-content="{{desc}}" data-original-title="{{title}}">{{title}}</a></td>
+    <td class="title"><a rel="popover" data-content="{{desc}}" data-original-title="{{title}}" data-trigger="manual">{{title}}</a></td>
     <td class="url">{{requestUrl}}</td>
     <td class="server">{{server}}</td>
     <td class="time">{{time}}</td>

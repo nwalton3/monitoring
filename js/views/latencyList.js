@@ -59,6 +59,32 @@ define([
       var data = {pageTitle:'Load Times', services: this.collection.toJSON()};
       
       $(this.el).html(template(data));
+      
+      // Hide popovers when most things are clicked
+      $('table').on('click', 'td', function(){
+        var td = $(this);
+        var title = td.hasClass('title');
+        
+        if (!title){
+          $('[rel=popover]').popover('hide').removeClass('open');
+        }
+      });
+      
+      // Popover functionality
+      $('[rel="popover"]').popover().on('click', function(e){
+        e.preventDefault();
+        $('[rel=popover]').not(this).popover('hide');
+        
+        var link = $(this);
+        var open = link.hasClass('open');
+       
+        if(!open) {
+          $('[rel=popover]').removeClass('open');
+          link.addClass('open').popover('show');
+        } else {
+          link.popover('hide').removeClass('open');
+        }
+      });
     }
     
   });

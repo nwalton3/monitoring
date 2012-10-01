@@ -10,7 +10,7 @@ require.config({
     backbone: 'libs/backbone/backbone-optamd3-min',
     text: 'libs/require/text',
     handlebars: 'libs/handlebars/handlebars-wrap',
-    plugins: 'plugins',
+    plugins: 'plugins.min',
     templates: '../templates'
   }
 

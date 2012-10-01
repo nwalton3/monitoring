@@ -52,7 +52,12 @@ td.title a {
   top:.5em;
 }
 
-
+h3.popover-title {
+  font-weight: bold;
+}
+td.title a {
+  display: block;
+}
 
 @import "helpers";
 @import "media-queries";

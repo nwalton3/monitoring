@@ -16,10 +16,10 @@ define([
       this.fetch({
         //async: false,
         success: function(collection, response) {
-          log('Services Updated');
+          console.log('Services Updated');
         },
         error: function(collection, response) {
-          log('Error updating services collection');
+          console.log('Error updating services collection');
         }
       });
     }

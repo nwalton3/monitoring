@@ -1,3 +1,6 @@
+// @codekit-prepend "bootstrap-tooltip.js"
+// @codekit-prepend "bootstrap-popover.js"
+
 // Avoid `console` errors in browsers that lack a console.
 if (!(window.console && log)) {
     (function() {

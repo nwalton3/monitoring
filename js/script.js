@@ -4,5 +4,5 @@ $(function(){
     $('.nav-tabs li').removeClass('active');
     $(this).parent().addClass('active');
   });
-    
+  
 });

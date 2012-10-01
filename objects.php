@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_STRICT); 
+//error_reporting(E_STRICT); 
 header('Content-Type: application/json');
 
 //What it should be able to do
@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 // 4. Check all services at the same time
 
 //Needs to be changed to point at the urlDefs in the ls repository
-require_once('c:/wamp/www/ls/site/inc/urlDefs.php');
+require_once('../learningsuite-trunk/site/inc/urlDefs.php');
 
 //S special fake session
 require_once("FakeSession.php");
@@ -31,7 +31,6 @@ $dremel = array(
 	'dremel4.byu.edu',
 	'dremel5.byu.edu',
 	'dremel6.byu.edu'
-
 	);
 
 $servicesObjectsData = array(
