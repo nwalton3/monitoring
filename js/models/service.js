@@ -7,6 +7,7 @@ define([
   var serviceModel = Backbone.Model.extend({
     defaults: {
       reloadID: '',
+      requestUrl: '',
       title: '',
       server: '',
       status: '',
